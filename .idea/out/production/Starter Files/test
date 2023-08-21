@@ -1,0 +1,238 @@
+// Import statements.
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Scanner;
+
+// Tic Tac Toe Controller class.
+public class TicTacToeConsoleController implements TicTacToeController {
+    private Readable readable;
+    private Appendable appendable;
+
+    // Parameterized constructor takes both Readable (basically input) and Appendable (basically output) objects.
+    public TicTacToeConsoleController(Readable readable, Appendable appendable) {
+        this.readable = readable;
+        this.appendable = appendable;
+    }
+
+    // actually IS saving the first input which is invalid, initially
+    // once we reach the first invalid input it takes us back to the top of the entire while loop, so the 0 is eventually replaced
+    // second 0 is replacing the first and not being used in conjunction with it
+    // throw error if it's a letter and not q, otherwise take the next value
+
+    /**
+     * Appends a message to display to the user and handles the IO exception.
+     *
+     * @param string which is the message to display to the user.
+     */
+    public void catchIOException(String string) {
+        try {appendable.append(string);}
+        catch(IOException ioe) {throw new IllegalStateException("IO Exception.\n");}
+    }
+
+    @Override
+    public void playGame(TicTacToe m) {
+
+        // Creates a scanner object to read in the input to the readable object.
+        Scanner scanner = new Scanner(readable);
+
+        // Creates variables to store the input, first as Strings then as integers.
+        String firstInput;
+        String secondInput;
+        int rowInput;
+        int columnInput;
+
+        // Prints the board to the user to begin.
+        catchIOException(m + "\n");
+
+        // Begins the game loops.
+        while (!m.isGameOver()) {
+
+            // Displays the player turn and asks the user for input.
+            catchIOException("Enter a move for " + m.getTurn().toString() + ":\n");
+
+            // Take first input as a string.
+            try {firstInput = scanner.next();}
+            catch(NoSuchElementException nse) {
+                catchIOException("You need to enter something.\n");
+                continue;
+            }
+
+            // Tries to convert the string to an integer.
+            try {rowInput = Integer.valueOf(firstInput);}
+
+            // If the string can't be converted to an integer...
+            catch(NumberFormatException nfe ) {
+                // ...first check if the string is q or Q and then ends the game.
+                if (Objects.equals(firstInput, "q") || Objects.equals(firstInput, "Q")) {
+                    catchIOException("Game quit! Ending game state:\n" + m + "\n");
+                    return;
+                // Otherwise, print an error message that the input type is incorrect.
+                } else {catchIOException("Non-integer value entered for row.\n" + m + "\n");}
+                continue;
+            }
+
+            System.out.println("first input: " + firstInput);
+            System.out.println("row: " + rowInput);
+
+            // Take second input as a string.
+            try {secondInput = scanner.next();}
+            catch(NoSuchElementException nse) {
+                catchIOException("You need to enter something.\n");
+                continue;
+            }
+
+            // If the string can't be converted to an integer...
+            try {columnInput = Integer.valueOf(secondInput);}
+            catch(NumberFormatException nfe ) {
+                // ...first check if the string is q or Q and then ends the game.
+                if (Objects.equals(secondInput, "q") || Objects.equals(secondInput, "Q")) {
+                    catchIOException("Game quit! Ending game state:\n" + m + "\n");
+                    return;
+                    // Otherwise, print an error message that the input type is incorrect.
+                } else {catchIOException("Non-integer value entered for column.\n" + m + "\n");}
+                continue;
+            }
+
+            System.out.println("second input: " + secondInput);
+            System.out.println("column: " + columnInput);
+
+            // Once you have valid input, try to make a move and print the board.
+            try {
+                m.move(rowInput, columnInput);
+                catchIOException(m + "\n");
+            }
+
+            // If the input is out of bounds for the board, print the method's error message to the user.
+            catch (IllegalArgumentException iae ) {
+                catchIOException(iae.getMessage() + "\n");
+                catchIOException(m + "\n");
+            }
+        }
+        // When the game is over...
+        // ... if there is no winner, print tie.
+        if (m.getWinner() == null) {
+            catchIOException("Game is over! Tie game.\n");
+        // ... if X wins, print that.
+        } else if (m.getWinner() == Player.X) {
+            catchIOException("Game is over! X wins.\n");
+        // ... if O wins, print that.
+        } else {catchIOException("Game is over! O wins.\n");}
+    }
+}
+
+///
+ // Displays the player turn and asks the user for input.
+            catchIOException("Enter a move for " + m.getTurn().toString() + ":\n");
+
+            try {
+                m.move(Integer.valueOf(scanner.next()), Integer.valueOf(scanner.next()));
+                catchIOException(m + "\n");
+            } catch (NumberFormatException nfe) {
+                // ...first check if the string is q or Q and then ends the game.
+                if (Objects.equals(scanner.next(), "q") || Objects.equals(scanner.next(), "Q")) {
+                    catchIOException("Game quit! Ending game state:\n" + m + "\n");
+                    return;
+                    // Otherwise, print an error message that the input type is incorrect.
+                } else {
+                    catchIOException("Non-integer value entered for row.\n" + m + "\n");
+                }
+            } catch (IllegalArgumentException iae) {
+                catchIOException(iae.getMessage() + "\n");
+                catchIOException(m + "\n");
+                break;
+            }
+ ///
+ @Override
+     public void playGame(TicTacToe m) {
+
+         // Creates a scanner object to read in the input to the readable object.
+         Scanner scanner = new Scanner(readable);
+
+
+         Integer rowInput = null; // list of generic type int  list.add, get method to retrieve, check list size
+         Integer columnInput = null;
+
+         // Prints the board to the user to begin.
+         catchIOException(m + "\n");
+
+         // Begins the game loops.
+         while (!m.isGameOver()) {
+
+             // Displays the player turn and asks the user for input.
+             catchIOException("Enter a move for " + m.getTurn().toString() + ":\n");
+
+             // if row input is null
+             // and next input is a number, store the value and continue
+             // if row is not null, then move to the column block
+             // if the column input is null
+             // and next input is a number, store the value and continue
+             // move
+             // reset the inputs
+
+             // Creates variables to store the input, first as Strings then as integers.
+
+             if (rowInput == null) {
+                 try {
+                     rowInput = Integer.valueOf(scanner.next());
+                 } catch (NumberFormatException nfe) {
+                     // ...first check if the string is q or Q and then ends the game.
+                     if (Objects.equals(scanner.next(), "q") || Objects.equals(scanner.next(), "Q")) {
+                         catchIOException("Game quit! Ending game state:\n" + m + "\n");
+                         return;
+                         // Otherwise, print an error message that the input type is incorrect.
+                     } else {
+                         catchIOException("Non-integer value entered for row.\n" + m + "\n");
+                     }
+                     continue;
+                 }
+             } else if (columnInput == null) {
+                 // If the string can't be converted to an integer...
+                 try {columnInput = Integer.valueOf(scanner.next());}
+                 catch(NumberFormatException nfe ) {
+                     // ...first check if the string is q or Q and then ends the game.
+                     if (Objects.equals(scanner.next(), "q") || Objects.equals(scanner.next(), "Q")) {
+                         catchIOException("Game quit! Ending game state:\n" + m + "\n");
+                         return;
+                         // Otherwise, print an error message that the input type is incorrect.
+                     } else {catchIOException("Non-integer value entered for column.\n" + m + "\n");}
+                     continue;
+                 }
+             } else {
+                 try {
+                     // Once you have valid input, try to make a move and print the board.
+                     m.move(rowInput, columnInput);
+                     rowInput = null;
+                     columnInput = null;
+                     catchIOException(m + "\n");
+                 }
+                 // If the input is out of bounds for the board, print the method's error message to the user.
+                 catch (IllegalArgumentException iae ) {
+                     catchIOException(iae.getMessage() + "\n");
+                     rowInput = null;
+                     columnInput = null;
+                     catchIOException(m + "\n");
+                     continue;
+                 }
+             }
+
+
+             //System.out.println("first input: " + firstInput);
+             //System.out.println("row: " + rowInput);
+
+
+             //System.out.println("second input: " + secondInput);
+             //System.out.println("column: " + columnInput);
+
+         }
+         // When the game is over...
+         // ... if there is no winner, print tie.
+         if (m.getWinner() == null) {
+             catchIOException("Game is over! Tie game.\n");
+             // ... if X wins, print that.
+         } else if (m.getWinner() == Player.X) {
+             catchIOException("Game is over! X wins.\n");
+             // ... if O wins, print that.
+         } else {catchIOException("Game is over! O wins.\n");}
+     }
+ }
